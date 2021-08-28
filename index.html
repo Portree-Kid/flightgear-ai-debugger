@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>flightgear ai debugger</title>
+	<link rel="stylesheet" href="index.css">
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+		crossorigin=""></script>
+	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.7.1/dist/leaflet.css">
+
+	<script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+	<link rel="stylesheet" href="node_modules/leaflet-sidebar-v2/css/leaflet-sidebar.css" />
+	<script defer src="node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+	<!--<script src='./map.js'></script>-->
+	<script>
+		var map = require('./map.js')
+
+		function openFile(f) {
+      console.log(f);
+			map.readFile(f);
+    }
+	</script>
+</head>
+
+<body>
+	<div id="mapid" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;"></div>
+	<div id="sidebar" class="leaflet-sidebar collapsed">
+		<!-- Nav tabs -->
+		<div class="leaflet-sidebar-tabs">
+			<ul role="tablist">
+				<!-- top aligned tabs -->
+				<li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+				<li><a href="#pointinfo" role="tab"><i class="fa fa-info"></i></a></li>
+			</ul>
+
+			<ul role="tablist">
+				<!-- bottom aligned tabs -->
+				<li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+			</ul>
+		</div>
+
+		<!-- Tab panes -->
+		<div class="leaflet-sidebar-content">
+			<div class="leaflet-sidebar-pane" id="home">
+				<h1 class="leaflet-sidebar-header">
+					Files
+					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+				</h1>
+				<div class='files-content'></div>
+			</div>
+			<div class="leaflet-sidebar-pane" id="pointinfo">
+				<h1 class="leaflet-sidebar-header">Pointinfo<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i>
+					</div>
+				</h1>
+				<div class='pointinfo-content'></div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+{
+	"name": "flightgear-ai-debugger",
+	"productName": "flightgear ai debugger",
+	"version": "0.0.0",
+	"description": "My solid app",
+	"license": "MIT",
+	"repository": "Portree-Kid/flightgear-ai-debugger",
+	"author": {
+		"name": "PortreeKid",
+		"email": "keith.paterson@gmx.de",
+		"url": "https://github.com/Portree-Kid"
+	},
+	"scripts": {
+		"postinstall": "electron-builder install-app-deps",
+		"lint": "xo",
+		"test": "npm run lint",
+		"start": "electron .",
+		"pack": "electron-builder --dir",
+		"dist": "electron-builder --macos --linux --windows",
+		"release": "np"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-free": "^5.15.4",
+		"@turf/turf": "^6.5.0",
+		"csv2geojson": "^5.1.1",
+		"electron-context-menu": "^3.0.0",
+		"electron-debug": "^3.2.0",
+		"electron-store": "^8.0.0",
+		"electron-unhandled": "^3.0.2",
+		"electron-updater": "^4.3.8",
+		"electron-util": "^0.15.1",
+		"leaflet": "^1.7.1",
+		"leaflet-easybutton": "^2.4.0",
+		"leaflet-sidebar-v2": "^3.2.3"
+	},
+	"devDependencies": {
+		"electron": "^12.0.6",
+		"electron-builder": "^22.10.5",
+		"np": "^7.5.0",
+		"xo": "^0.39.1"
+	},
+	"xo": {
+		"envs": [
+			"node",
+			"browser"
+		]
+	},
+	"np": {
+		"publish": false,
+		"releaseDraft": false
+	},
+	"build": {
+		"appId": "com.Portree-Kid.flightgear-ai-debugger",
+		"mac": {
+			"category": "public.app-category.social-networking",
+			"darkModeSupport": true
+		},
+		"dmg": {
+			"iconSize": 160,
+			"contents": [
+				{
+					"x": 180,
+					"y": 170
+				},
+				{
+					"x": 480,
+					"y": 170,
+					"type": "link",
+					"path": "/Applications"
+				}
+			]
+		},
+		"linux": {
+			"target": [
+				"AppImage",
+				"deb"
+			],
+			"category": "Network;Chat"
+		}
+	}
+}
