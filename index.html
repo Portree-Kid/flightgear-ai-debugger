@@ -15,12 +15,28 @@
 	<script defer src="node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
 	<!--<script src='./map.js'></script>-->
 	<script>
-		var map = require('./map.js')
+			var map = require('./map.js');
+			var filterValue = "";
 
-		function openFile(f) {
-      console.log(f);
-			map.readFile(f);
-    }
+			function openFile(f) {
+				console.log(f);
+				map.readFile(f);
+			}
+
+			function filterInput() {
+				filterValue = document.getElementById('filter-edit').value;
+				console.log(filterValue);
+				setTimeout(() => {
+					require('./backend').listFiles().then(files => {
+					var innerHTML = files.filter(f => f.indexOf(filterValue) >= 0).map(f => `<A onclick="openFile('${f}')" href="#">${f}</A><BR>`).reduce((prev, curr) => prev + curr);
+					console.log(innerHTML);
+					if (document.getElementsByClassName('files-content').length > 0) {
+						document.getElementsByClassName('files-content')[0].innerHTML =
+							innerHTML;
+					}
+				});					
+				}, 1);
+			}
 	</script>
 </head>
 
@@ -48,6 +64,7 @@
 					Files
 					<div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
 				</h1>
+				<div class='filter'><input id="filter-edit" oninput="filterInput()"/></div>
 				<div class='files-content'></div>
 			</div>
 			<div class="leaflet-sidebar-pane" id="pointinfo">

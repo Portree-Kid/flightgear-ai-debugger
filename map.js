@@ -6,7 +6,9 @@ function keyFor (item) {
 function removeDuplicates (arr) {
   // index the entries by their coordinates such that
   // indexed['lat:lng'] == the entry.
-  var indexed = {};
+  var indexed = {};  
+  if (arr.features==undefined)
+    return;
   arr.features.forEach(function (item) {
     // a duplicate key will replace the existing entry
     indexed[keyFor(item)] = item;
@@ -71,12 +73,13 @@ var aircraftLayer;
 var sidebar;
 
 var pointIndex = 0;
+var mymap;
 
 function initMap () {
   require('leaflet-sidebar-v2');
   const mapDiv = document.getElementById("mapid");
   console.log(mapDiv);
-  var mymap = L.map(mapDiv);
+  mymap = L.map(mapDiv);
   try {
     var mapCenter = JSON.parse(window.localStorage['mapView']);
     mymap.setView([mapCenter.lat, mapCenter.lng], mapCenter.zoom);
@@ -98,7 +101,13 @@ function initMap () {
 
   resizeObserver.observe(mapDiv);
 
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicG9ydHJlZWtpZCIsImEiOiJja3J2MHRoMWUwMjNhMnhydjU4YWZ6M2NlIn0.FhO4Ws1SHJbPMUFIa6UZVw', {
+  var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  });
+  OpenStreetMap_Mapnik.addTo(mymap);
+  /*
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicG9ydHJlZWtpZCIsImEiOiJja3J2MHRoMWUwMjNhMnhydjU4YWZ6M2NlIn0.FhO4Ws1SHJbPMUFIa6UZVw', {
     maxZoom: 24,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -106,6 +115,7 @@ function initMap () {
     tileSize: 512,
     zoomOffset: -1
   }).addTo(mymap);
+  */
 
   const backend = require('./backend');
 
@@ -126,8 +136,9 @@ function initMap () {
   }).addTo(mymap);
   sidebar.on('content', function (e) {
     console.log(e.target);
+
     backend.listFiles().then(files => {
-      var innerHTML = files.map(f => `<A onclick="openFile('${f}')" href="#">${f}</A><BR>`).reduce((prev, curr) => prev + curr);
+      var innerHTML = files.filter(f => f.indexOf(filterValue) >= 0).map(f => `<A onclick="openFile('${f}')" href="#">${f}</A><BR>`).reduce((prev, curr) => prev + curr);
       console.log(innerHTML);
       if (sidebar.getContainer().getElementsByClassName('files-content').length > 0) {
         sidebar.getContainer().getElementsByClassName('files-content')[0].innerHTML =
@@ -156,13 +167,14 @@ exports.readFile = function (filename) {
   const backend = require('./backend');
   wpLayer.clearLayers();
   backend.wps(filename, (err, data) => {
-    //    console.log(data);
+    console.log(data);
     //var wpsJSON = JSON.parse(data);
-    L.geoJson(removeDuplicates(data), {
+    var g = L.geoJson(removeDuplicates(data), {
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptionsWPS).bindTooltip(feature.properties);
       }
-    }).addTo(wpLayer);
+    }).addTo(wpLayer);    
+    mymap.fitBounds(g.getBounds());
   }
   );
   aircraftLayer.clearLayers();

@@ -1,7 +1,7 @@
 {
 	"name": "flightgear-ai-debugger",
 	"productName": "flightgear ai debugger",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "My solid app",
 	"license": "MIT",
 	"repository": "Portree-Kid/flightgear-ai-debugger",
@@ -16,7 +16,7 @@
 		"test": "npm run lint",
 		"start": "electron .",
 		"pack": "electron-builder --dir",
-		"dist": "electron-builder --macos --linux --windows",
+		"dist": "electron-builder --linux --windows",
 		"release": "np"
 	},
 	"dependencies": {

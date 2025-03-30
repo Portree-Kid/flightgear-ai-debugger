@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const csv2geojson = require('csv2geojson');
+const dir = 'W:\\';
 
 exports.aircraft = function (filename, cb) {
-  const dir = 'X:\\';
     console.log(filename);
     const csvString = fs.readFileSync(path.join(dir, filename), 'utf8');
 
@@ -13,7 +13,6 @@ exports.aircraft = function (filename, cb) {
       cb)
 };
 exports.wps = function (filename, cb) {
-  const dir = 'X:\\';
     console.log(filename);
     const csvString = fs.readFileSync(path.join(dir, filename), 'utf8');
 
@@ -25,7 +24,6 @@ exports.wps = function (filename, cb) {
       cb)
 };
 exports.listFiles = async function () {
-  const dir = 'X:\\';
   var files = fs.readdirSync(dir).map(function (fileName) {
     var time = 1000000000;
     try {
